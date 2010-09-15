@@ -1,3 +1,5 @@
+require 'fraction'
+
 class Ratio
   attr_accessor :numerator, :denominator
   
