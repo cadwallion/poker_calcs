@@ -1,6 +1,6 @@
 module Poker
   class Game
-    attr_reader :players, :pot, :deck, :community_cards
+    attr_reader :players, :deck, :community_cards
   
     def initialize(args = {})
       @deck = Poker::Deck.new
@@ -18,19 +18,23 @@ module Poker
     end
   
     def flop
-      @community_cards << @deck.deal(:flop)
+      @community_cards = @community_cards | @deck.deal(:flop)
     end
   
     def turn
-      @community_cards << @deck.deal(:turn)
+      @community_cards = @community_cards | @deck.deal(:turn)
     end
   
     def river
-      @community_cards << @deck.deal(:river)
+      @community_cards = @community_cards | @deck.deal(:river)
     end
   
     def showdown
-      # stub - compare hands and determine who wins
+      final_holdings = []
+      @players.each do |player|
+        final_holdings << (player.cards | @community_cards)
+      end
+      Poker::Result.determine(final_holdings)
     end
   end
 end
